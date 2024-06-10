@@ -1,6 +1,7 @@
 import 'package:data_connection_checker_tv/data_connection_checker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:learn_clean_architecture_again/features/pokemon_image/presentation/providers/pokemon_image_provider.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,7 @@ import '../providers/selected_pokemon_item_provider.dart';
 import 'custom_elevated_button_widget.dart';
 
 class SearchPokemonWidget extends StatelessWidget {
-  const SearchPokemonWidget({Key? key}) : super(key: key);
+  const SearchPokemonWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -111,9 +112,12 @@ class SearchPokemonWidget extends StatelessWidget {
             textColor: Colors.white,
             iconColor: Colors.white,
             callback: () async {
+              PokemonImageProvider pokemonImageProvider =
+                  Provider.of<PokemonImageProvider>(context, listen: false);
               Provider.of<PokemonProvider>(context, listen: false)
                   .eitherFailureOrPokemon(
                 value: (selectedPokemonItem.number + 1).toString(),
+                pokemonImageProvider: pokemonImageProvider,
               );
               if (await NetworkInfoImpl(DataConnectionChecker()).isConnected ==
                   false) {
